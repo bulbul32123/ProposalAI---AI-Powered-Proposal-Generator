@@ -21,12 +21,6 @@
 /build
 
 # misc
-/app
-/public
-/lib
-/components
-/hooks
-/styles
 
 .DS_Store
 *.pem

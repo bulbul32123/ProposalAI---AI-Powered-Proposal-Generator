@@ -1,7 +1,5 @@
 "use client"
-
 import { useState, useEffect } from "react"
-import { Header } from "@/components/header"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
