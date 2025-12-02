@@ -1,11 +1,10 @@
 "use client"
-
 import { useState, useEffect } from "react"
 import { Header } from "@/components/header"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Eye, Copy, Calendar, Check } from "lucide-react"
+import { Eye, Copy, Calendar, Check, Trash2 } from "lucide-react"
 import { toast } from "sonner"
 import { getProposals } from "@/lib/storage"
 import { cn } from "@/lib/utils"
@@ -25,6 +24,9 @@ export default function HistoryPage() {
     setCopiedId(proposal.id)
     toast.success("Copied!")
     setTimeout(() => setCopiedId(null), 2000)
+  }
+  const handleDeleteProposals = () => {
+
   }
 
   function formatDate(dateString) {
@@ -77,13 +79,16 @@ export default function HistoryPage() {
                         variant="outline"
                         size="sm"
                         onClick={() => setSelectedProposal(proposal)}
-                        className="gap-1"
+                        className="gap-1 cursor-pointer"
                       >
                         <Eye className="w-4 h-4" />
                         View
                       </Button>
-                      <Button variant="outline" size="sm" onClick={(e) => handleCopy(proposal, e)} className="gap-1">
+                      <Button variant="outline" size="sm" onClick={(e) => handleCopy(proposal, e)} className="gap-1 cursor-pointer">
                         {copiedId === proposal.id ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                      </Button>
+                      <Button variant="outline" size="sm" onClick={(e) => handleDeleteProposals(proposal, e)} className="gap-1 cursor-pointer hover:bg-red-500">
+                        <Trash2 className="w-4 h-4" />
                       </Button>
                     </div>
                   </div>
