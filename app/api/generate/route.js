@@ -1,15 +1,17 @@
-import { OpenAI } from 'openai'; 
-const openai = new OpenAI();
-
 export async function POST(request) {
   const { jobDescription, tone, profile } = await request.json()
 
-  const systemMessage = `You are an expert freelance proposal writer. Generate compelling, professional proposals that win projects. Keep proposals concise (200-300 words), personalized, and focused on client value.`
+  // --- REFINED SYSTEM MESSAGE ---
+  const systemMessage = `
+ You are an expert Proposal Architect and persuasive freelance copywriter. Your primary goal is to generate a highly effective, concise, and scannable proposal tailored to a specific job posting.
+
+ Output Constraint: The final proposal MUST be strictly between 200 and 300 words total. Prioritize clarity, immediate value, and a strong call-to-action.
+  `.trim()
 
   const toneInstructions = {
-    Professional: "Use a formal, business-like tone. Be respectful and emphasize expertise.",
-    Friendly: "Use a warm, conversational tone. Be approachable while maintaining professionalism.",
-    Urgent: "Convey enthusiasm and quick turnaround. Emphasize availability and fast delivery.",
+    Professional: "Use a formal, business-like tone. Be respectful and emphasize expertise and proven methodology.",
+    Friendly: "Use a warm, conversational tone. Be approachable while maintaining professionalism and highlighting collaborative fit.",
+    Urgent: "Convey enthusiasm and quick, reliable turnaround. Emphasize immediate availability, speed, and efficiency in delivery.",
   }
 
   let profileContext = ""
@@ -20,54 +22,63 @@ export async function POST(request) {
     if (profile.bio) profileContext += `\nBio: ${profile.bio}`
   }
 
-  const prompt = `Write a winning freelance proposal for this job posting:
+const prompt = `
+Generate a winning freelance proposal based on the details below.
 
+Job Posting:
 ${jobDescription}
-${profileContext ? `\nFreelancer Profile:${profileContext}` : ""}
+
+${profileContext ? `Profile: ${profileContext}` : ""}
 
 Tone: ${toneInstructions[tone] || toneInstructions.Professional}
 
-Structure:
-1. Brief personalized greeting
-2. Why you're a great fit (2-3 key points)
-3. Relevant experience or approach
-4. Clear next steps/call to action
+Rules: 
+1. Focus on client value/results, not just features.
+2. Use natural, human phrasing and do not use Dear.
+3. Total length MUST be 200-300 words.
+4. Use freelancer information to give it a professionalism
 
-Keep it concise and compelling.`
+Structure:
+1. Greeting (Personalized hook).
+2. Demonstrate you understand their pain point better than they do. Validate their problem.
+3. Great Fit (2-3 key, results-driven points linking skills to job).
+4. Detail your specific approach and unique methodology. This should focus on how you solve the problem.
+5. Call to Action & Compliance: (Single, direct next step PLUS compliance with all client-requested application materials, e.g., portfolio, estimates, etc.).
+`.trim()
+  console.log(prompt);
+  
 
   try {
-    const completion = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
-      messages: [
-        { role: "system", content: systemMessage },
-        { role: "user", content: prompt }
-      ],
-      temperature: 0.7,
-    });
+    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        model: "openai/gpt-4o-mini", // Excellent choice for cost and speed with concise proposals
+        messages: [
+          { role: "system", content: systemMessage },
+          { role: "user", content: prompt }
+        ],
+        temperature: 0.7 // Good balance between creativity and consistency
+      })
+    })
 
-    const proposal = completion.choices[0].message.content;
+    const data = await response.json()
 
-    return Response.json({ proposal });
+    if (!data.choices || !data.choices.length) {
+      throw new Error("Invalid API response")
+    }
+
+    const proposal = data.choices[0].message.content
+    return Response.json({ proposal })
 
   } catch (error) {
-    console.error("Generate error:", error.message || error)
-    const freelancerName = profile?.name || "An Expert Freelancer";
-    const selectedTone = toneInstructions[tone] || toneInstructions.Professional;
-
-    const mockProposal = `Dear Hiring Manager,
-
-Thank you for posting the job opportunity. Based on your requirements and my profile, I am an excellent fit. I specialize in the exact skills you've highlighted, and my ${profile?.experience || 'several'} years of experience align perfectly with this scope. I prioritize clear communication and delivering results that exceed expectations.
-
-I am expertise in ${profile?.skills || 'development and design'} ensures a high-quality outcome. I have successfully completed similar projects for clients in your industry, providing a reliable and professional approach.
-
-I am ready to start immediately. Let's schedule a brief call next week to discuss your project goals in more detail.
-
-Best regards,
-${freelancerName}
-`
-    return Response.json({
-      proposal: mockProposal,
-      isMock: true
-    });
+    console.error("OpenRouter API Error:", error)
+    return Response.json(
+      { error: "Failed to generate proposal. Please try again." },
+      { status: 500 }
+    )
   }
 }
