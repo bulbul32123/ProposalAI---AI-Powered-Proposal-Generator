@@ -14,10 +14,7 @@ export default function SettingsPage() {
 
   function handleClearData() {
     if (confirm("Are you sure you want to clear all data? This cannot be undone.")) {
-      localStorage.removeItem("proposalai_profile")
       localStorage.removeItem("proposalai_proposals")
-      localStorage.removeItem("proposalai_usage")
-      localStorage.removeItem("proposalai_subscription")
       toast.success("All data cleared successfully")
     }
   }
@@ -81,7 +78,7 @@ export default function SettingsPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-medium">Clear All Data</p>
-                  <p className="text-sm text-muted-foreground">Delete your profile, proposals, and reset usage</p>
+                  <p className="text-sm text-muted-foreground">Delete your all proposals</p>
                 </div>
                 <Button variant="destructive" onClick={handleClearData}>
                   Clear Data
