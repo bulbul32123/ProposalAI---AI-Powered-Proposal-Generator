@@ -82,11 +82,3 @@ Structure:
   }
 }
 
-app/api/generate/route.js
-app/profile/page.jsx
-app/settings/page.jsx
-
-
-git add app/api/generate/route.js
-git commit -m "Api route updated" --date="2025-12-03"
-git push -u origin main
