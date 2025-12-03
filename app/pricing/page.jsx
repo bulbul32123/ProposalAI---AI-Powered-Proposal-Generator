@@ -3,7 +3,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Check, DollarSign, RefreshCw } from "lucide-react"
+import { Check} from "lucide-react"
 
 const pricingPlans = [
     {
@@ -229,6 +229,3 @@ export default function PricingSection() {
         </section>
     )
 }
-git add app/pricing/page.jsx
-git commit -m "pricing updated" --date="2025-12-03"
-git push -u origin main
