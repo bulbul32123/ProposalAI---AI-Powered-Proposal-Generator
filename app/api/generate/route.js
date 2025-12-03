@@ -1,7 +1,6 @@
 export async function POST(request) {
   const { jobDescription, tone, profile } = await request.json()
 
-  // --- REFINED SYSTEM MESSAGE ---
   const systemMessage = `
  You are an expert Proposal Architect and persuasive freelance copywriter. Your primary goal is to generate a highly effective, concise, and scannable proposal tailored to a specific job posting.
 
@@ -56,12 +55,12 @@ Structure:
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        model: "openai/gpt-4o-mini", // Excellent choice for cost and speed with concise proposals
+        model: "openai/gpt-4o-mini", 
         messages: [
           { role: "system", content: systemMessage },
           { role: "user", content: prompt }
         ],
-        temperature: 0.7 // Good balance between creativity and consistency
+        temperature: 0.7 
       })
     })
 
@@ -82,3 +81,12 @@ Structure:
     )
   }
 }
+
+app/api/generate/route.js
+app/profile/page.jsx
+app/settings/page.jsx
+
+
+git add app/api/generate/route.js
+git commit -m "Api route updated" --date="2025-12-03"
+git push -u origin main
