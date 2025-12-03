@@ -5,7 +5,6 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Badge } from "@/components/ui/badge"
 import { Check, DollarSign, RefreshCw } from "lucide-react"
 
-// --- UPDATED PRICING DATA STRUCTURE ---
 const pricingPlans = [
     {
         name: "Free",
@@ -30,10 +29,9 @@ const pricingPlans = [
         description: "Close more deals with high-quality, professional proposals (Powered by GPT-4o Mini)",
         isFree: false,
         popular: true,
-        // --- YOUR SPECIFIED PRICES ---
         prices: {
             monthly: { BDT: 99, USD: 2 },
-            yearly: { BDT: 1089, USD: 22 }, // 1 Month Free
+            yearly: { BDT: 1089, USD: 22 },
         },
         features: [
             "150 Proposals per Month (20x Cap)",
@@ -45,7 +43,6 @@ const pricingPlans = [
     },
 ]
 
-// Helper function for currency symbol display
 const formatCurrency = (amount, currency) => {
     if (currency === 'BDT') {
         return `৳${amount}`;
@@ -57,14 +54,10 @@ const formatCurrency = (amount, currency) => {
 export default function PricingSection() {
 
     const [isYearly, setIsYearly] = useState(false)
-    const [isBDT, setIsBDT] = useState(true) // New state: true for BDT, false for USD
-
-    // Calculate savings based on the Pro plan data
+    const [isBDT, setIsBDT] = useState(true)
     const proPlan = pricingPlans.find(p => p.name === 'Pro');
     const monthlyPrice = isBDT ? proPlan.prices.monthly.BDT : proPlan.prices.monthly.USD;
     const yearlyPrice = isBDT ? proPlan.prices.yearly.BDT : proPlan.prices.yearly.USD;
-
-    // Calculates savings based on your 1-month-free model
     const calculatedSavings = ((monthlyPrice * 12) - yearlyPrice) / (monthlyPrice * 12);
     const savingsPercentage = Math.round(calculatedSavings * 100);
 
@@ -72,7 +65,6 @@ export default function PricingSection() {
     return (
         <section className="py-24 px-4" aria-labelledby="pricing-heading">
             <div className="max-w-7xl mx-auto">
-                {/* Header */}
                 <div className="text-center mb-16">
                     <h1 id="pricing-heading" className="text-4xl font-bold text-balance mb-4">
                         Choose Your Plan
@@ -81,9 +73,7 @@ export default function PricingSection() {
                         Select the perfect plan for your needs. Prices adjust automatically based on your currency selection.
                     </p>
 
-                    {/* Currency & Billing Toggle Group */}
                     <div className="flex flex-col items-center gap-6 mb-8">
-                        {/* Currency Toggle */}
                         <div className="flex items-center justify-center gap-4">
                             <span
                                 className={`text-sm font-medium w-16 text-center transition-colors ${isBDT ? "text-foreground" : "text-muted-foreground"}`}
@@ -111,7 +101,6 @@ export default function PricingSection() {
                             </span>
                         </div>
 
-                        {/* Billing Period Toggle */}
                         <div className="flex items-center justify-center gap-4">
                             <span
                                 className={`text-sm font-medium w-16 text-center ${!isYearly ? "text-foreground" : "text-muted-foreground"}`}
@@ -233,7 +222,6 @@ export default function PricingSection() {
                     })}
                 </div>
 
-                {/* Footer */}
                 <div className="text-center mt-16">
                     <p className="text-muted-foreground">Local payments supported via bKash/Nagad. International payments via Credit Card.</p>
                 </div>
@@ -241,27 +229,6 @@ export default function PricingSection() {
         </section>
     )
 }
-
-
-// --date="2025-11-07"
-
-
-
-
-
-
-
-
-
-
-
-
-
-app/pricing/
-        components/DropDown.jsx
-        models/
-
-
-git add app/pricing/
-git commit -m "app pricing added" --date="2025-12-04"
+git add app/pricing/page.jsx
+git commit -m "pricing updated" --date="2025-12-03"
 git push -u origin main
