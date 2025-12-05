@@ -2,6 +2,7 @@ import { Inter } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
 import { Toaster } from "@/components/ui/sonner"
+import { Header } from "../components/header"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -14,6 +15,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`font-sans antialiased`}>
+        <Header />
         {children}
         <Toaster position="top-center" />
         <Analytics />
