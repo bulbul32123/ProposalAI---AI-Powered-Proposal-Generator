@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Header } from "@/components/header"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { TrendingUp, Crown, Check } from "lucide-react"
@@ -33,7 +32,6 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
       <main className="max-w-5xl mx-auto px-4 py-8">
         <div className="mb-6">
           <h2 className="text-2xl font-bold text-navy">Dashboard</h2>
