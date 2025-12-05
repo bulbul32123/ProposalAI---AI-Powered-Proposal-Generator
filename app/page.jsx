@@ -110,8 +110,7 @@ export default function GeneratePage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
-      <main className="max-w-5xl mx-auto px-4 py-8">
+      <main className="max-w-5xl mx-auto max-md:px-4 py-8">
         <div className="mb-6">
           <h2 className="text-2xl font-bold text-navy">Generate Proposal</h2>
           <p className="text-muted-foreground">Create a winning proposal for your next freelance job</p>
